@@ -1,7 +1,5 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +16,11 @@ using System.Windows.Shapes;
 namespace WPF_Projects.View.UserControls
 {
     /// <summary>
-    /// Interaction logic for MenuBar.xaml
+    /// Interaction logic for ProfileViewer.xaml
     /// </summary>
-    public partial class MenuBar : UserControl
+    public partial class ProfileViewer : UserControl
     {
-
-        public MenuBar()
+        public ProfileViewer()
         {
             InitializeComponent();
         }

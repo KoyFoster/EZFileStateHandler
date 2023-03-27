@@ -25,21 +25,14 @@
                 </MenuItem>
                 <MenuItem Header="Edit" />
             </Menu>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions >
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-
-                <Button Name="btnCopy" IsEnabled="True"  Margin="4" Content="Copy" Click="Button_Click" Grid.Column="0" />
-                <Button Name="btnSelFile" IsEnabled="True" Margin="4" Content="Select File" Click="Button_SelectFile" Grid.Column="1" />
-                <TextBox Name="Src" Width="150" Margin="4" Grid.Column="2"  />
-                <TextBox Name="Dest" Width="150" Margin="4" Grid.Column="3" />
-                <TextBlock Name="CopyStatus" Text="" Grid.Column="4"></TextBlock>
-            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <local:StateHandlerMaker />
         </Grid>
     </Grid>
 </UserControl>
