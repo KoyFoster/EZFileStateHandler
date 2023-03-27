@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF_Projects.Models;
 
 namespace WPF_Projects.View.UserControls
 {
@@ -27,6 +28,35 @@ namespace WPF_Projects.View.UserControls
         {
             InitializeComponent();
             copying = false;
+        }
+
+        public void CreateProfile(object sender, RoutedEventArgs e)
+        {
+            ProfileMaker.IsEnabled = false;
+            try
+            {
+                var profile = new Profile(ProfileLocation.Text, Src.Text, Dest.Text);
+
+                // Get Current Settings
+                var settings = Helpers.LocalStorage.GetSettings();
+
+                if (settings == null)
+                {
+                    settings = new Settings();
+                }
+
+                settings.Profiles.Add(profile);
+                Helpers.LocalStorage.SaveSettings(settings);
+                Status.Text = "Profile Successfully created";
+            }
+            catch (Exception ex)
+            {
+                Status.Text = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                ProfileMaker.IsEnabled = true;
+            }
         }
 
         public static async Task CopyFileAsync(string srcFile, string destFile)
@@ -84,7 +114,7 @@ namespace WPF_Projects.View.UserControls
             //}
         }
 
-        private void Button_SelectFile(object sender, RoutedEventArgs e)
+        private void btnSrc_SelectFile(object sender, RoutedEventArgs e)
         {
             // Create a new instance of the OpenFileDialog class
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -99,6 +129,25 @@ namespace WPF_Projects.View.UserControls
             if (result == true)
             {
                 Src.Text = openFileDialog.FileName;
+                // Do something with the file path
+            }
+        }
+
+        private void btnDst_SelectFile(object sender, RoutedEventArgs e)
+        {
+            // Create a new instance of the OpenFileDialog class
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            // Set the filter for the file types you want to allow the user to select
+            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            // Display the dialog box to the user
+            bool? result = openFileDialog.ShowDialog();
+
+            // If the user selects a file, get the file path
+            if (result == true)
+            {
+                Dest.Text = openFileDialog.FileName;
                 // Do something with the file path
             }
         }

@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:WPF_Projects.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="256">
-    <Grid>
+    <Grid Name="ProfileMaker">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -20,24 +22,23 @@
         </Grid.RowDefinitions>
 
         <!--<Button     Grid.Row="0" Name="btnCopy" IsEnabled="True"  Margin="4" Content="Copy" Click="Button_Click"  />-->
-        <TextBlock  Grid.Row="0" Name="CopyStatus" Text="" ></TextBlock>
+        <TextBlock  Grid.Row="0" Name="Status" Text="" ></TextBlock>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label Width="72" HorizontalContentAlignment="Right">Source:</Label>
             <TextBox Name="Src" Width="150" Margin="4"  />
-            <Button Name="btnSelSrc" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="Button_SelectFile" />
+            <Button Name="btnSelSrc" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnSrc_SelectFile" />
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label Width="72" HorizontalContentAlignment="Right">Destination:</Label>
             <TextBox Name="Dest" Width="150" Margin="4" />
-            <Button Name="btnSelDest" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="Button_SelectFile" />
+            <Button Name="btnSelDest" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnDst_SelectFile" />
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label Width="72" HorizontalContentAlignment="Right">Profile:</Label>
             <TextBox Name="ProfileLocation" Width="150" Margin="4" />
-            <Button Name="btnSelProfile" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="Button_SelectFile" />
         </StackPanel>
-        
-        <TextBlock  Grid.Row="5" Name="ExampleFileStructure" Text="" ></TextBlock>
+        <Button Grid.Row="5" Name="btnCreateProfile" Click="CreateProfile" >Create Profile</Button>
+        <TextBlock  Grid.Row="6" Name="ExampleFileStructure" Text="" ></TextBlock>
     </Grid>
 </UserControl>
