@@ -1,0 +1,26 @@
+﻿<Window x:Class="WPF_Projects.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Projects" xmlns:usercontrols="clr-namespace:WPF_Projects.View.UserControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="#333">
+    <Grid>
+        <usercontrols:MenuBar Loaded="MenuBar_Loaded" />
+        <!--Menu Bar End-->
+        
+        
+        <!--<TextBox Name="Directory" Text="Hello World!" FontSize="75" VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+        <Button Name="Backup"   Width="128" Height="24" Click="Backup_Click">
+            <Button.Content>
+                Backup
+            </Button.Content>
+        </Button>
+        <Button Name="Restore" Width="128" Height="24" Click="Restore_Click">
+            <Button.Content>
+                Restore
+            </Button.Content>
+        </Button>-->
+    </Grid>
+</Window>
