@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF_Projects.View.UserControls
+namespace EZFileStateHandler.Views.UserControls
 {
     /// <summary>
     /// Interaction logic for MenuBar.xaml

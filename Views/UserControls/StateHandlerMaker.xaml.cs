@@ -14,9 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPF_Projects.Models;
+using EZFileStateHandler.Models;
 
-namespace WPF_Projects.View.UserControls
+namespace EZFileStateHandler.Views.UserControls
 {
     /// <summary>
     /// Interaction logic for StateHandlerMaker.xaml
@@ -37,16 +37,8 @@ namespace WPF_Projects.View.UserControls
             {
                 var profile = new Profile(ProfileLocation.Text, Src.Text, Dest.Text);
 
-                // Get Current Settings
-                var settings = Helpers.LocalStorage.GetSettings();
-
-                if (settings == null)
-                {
-                    settings = new Settings();
-                }
-
-                settings.Profiles.Add(profile);
-                Helpers.LocalStorage.SaveSettings(settings);
+                AppSettings.Settings.Profiles.Add(profile);
+                AppSettings.SaveSettings();
                 Status.Text = "Profile Successfully created";
             }
             catch (Exception ex)

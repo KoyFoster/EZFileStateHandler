@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPF_Projects.Interfaces;
+using EZFileStateHandler.Interfaces;
 
-namespace WPF_Projects.Models
+namespace EZFileStateHandler.Models
 {
     public class Profile : IProfile
     {

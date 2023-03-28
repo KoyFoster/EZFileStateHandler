@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WPF_Projects
+namespace EZFileStateHandler.Views
 {
     public partial class MainWindow : Window
     {

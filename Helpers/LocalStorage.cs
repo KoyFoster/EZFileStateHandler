@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.IO.IsolatedStorage;
 using System.IO;
 using Newtonsoft.Json;
-using WPF_Projects.Models;
+using EZFileStateHandler.Models;
 
-namespace WPF_Projects.Helpers
+namespace EZFileStateHandler.Helpers
 {
     public class LocalStorage
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WPF_Projects.Interfaces
+namespace EZFileStateHandler.Interfaces
 {
     public interface IProfile
     {
