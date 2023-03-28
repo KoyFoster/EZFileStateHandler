@@ -7,20 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="#333" >
     <Grid>
-        <usercontrols:MenuBar Loaded="MenuBar_Loaded" />
-        <!--Menu Bar End-->
-        
-        
-        <!--<TextBox Name="Directory" Text="Hello World!" FontSize="75" VerticalAlignment="Center"  HorizontalAlignment="Center"/>
-        <Button Name="Backup"   Width="128" Height="24" Click="Backup_Click">
-            <Button.Content>
-                Backup
-            </Button.Content>
-        </Button>
-        <Button Name="Restore" Width="128" Height="24" Click="Restore_Click">
-            <Button.Content>
-                Restore
-            </Button.Content>
-        </Button>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition  />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <usercontrols:MenuBar Grid.Column="0" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <usercontrols:StateHandlerMaker Grid.Column="0" />
+            <usercontrols:ProfileViewer Grid.Column="1" />
+        </Grid>
     </Grid>
 </Window>

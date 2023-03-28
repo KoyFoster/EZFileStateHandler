@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using EZFileStateHandler.Models;
+using EZFileStateHandler.Interfaces;
 
 namespace EZFileStateHandler.Views.UserControls
 {
@@ -23,11 +24,11 @@ namespace EZFileStateHandler.Views.UserControls
     /// </summary>
     public partial class StateHandlerMaker : UserControl
     {
-        private bool? copying;
+
         public StateHandlerMaker()
         {
             InitializeComponent();
-            copying = false;
+
         }
 
         public void CreateProfile(object sender, RoutedEventArgs e)
@@ -37,8 +38,8 @@ namespace EZFileStateHandler.Views.UserControls
             {
                 var profile = new Profile(ProfileLocation.Text, Src.Text, Dest.Text);
 
-                AppSettings.Settings.Profiles.Add(profile);
-                AppSettings.SaveSettings();
+                //AppSettings.Settings.Profiles.Add(profile);
+                //AppSettings.SaveSettings();
                 Status.Text = "Profile Successfully created";
             }
             catch (Exception ex)
@@ -81,31 +82,6 @@ namespace EZFileStateHandler.Views.UserControls
             await CopyFileAsync(srcFile, destFile);
         }
 
-        private async void Copy(object sender, RoutedEventArgs e)
-        {
-            //if (copying != true)
-            //{
-            //    copying = true;
-            //    CopyStatus.Text = "Copying...";
-            //    try
-            //    {
-            //        btnCopy.IsEnabled = false;
-            //        await CopyFile(Src.Text, Dest.Text);
-            //        CopyStatus.Text = "Complete";
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //        CopyStatus.Text = $"An error occured: {ex.Message}";
-            //    }
-            //    finally
-            //    {
-            //        copying = false;
-            //        btnCopy.IsEnabled = true;
-            //    }
-            //}
-        }
-
         private void btnSrc_SelectFile(object sender, RoutedEventArgs e)
         {
             // Create a new instance of the OpenFileDialog class
@@ -142,11 +118,6 @@ namespace EZFileStateHandler.Views.UserControls
                 Dest.Text = openFileDialog.FileName;
                 // Do something with the file path
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Copy(sender, e);
         }
     }
 }
