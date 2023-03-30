@@ -7,6 +7,7 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using Newtonsoft.Json;
 using EZFileStateHandler.Models;
+using System.Text.Json;
 
 namespace EZFileStateHandler.Helpers
 {
@@ -24,7 +25,7 @@ namespace EZFileStateHandler.Helpers
                     {
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
-                            writer.WriteLine(JsonConvert.SerializeObject(data));
+                            writer.WriteLine(System.Text.Json.JsonSerializer.Serialize(data));
                         }
                     }
                 }
@@ -49,12 +50,13 @@ namespace EZFileStateHandler.Helpers
                     {
                         string data = reader.ReadToEnd();
                         Console.WriteLine(data);
-                        return JsonConvert.DeserializeObject<T>(data);
+                        return System.Text.Json.JsonSerializer.Deserialize<T>(data);
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception err)
             {
+                Console.WriteLine(err);
                 return null;
             }
         }

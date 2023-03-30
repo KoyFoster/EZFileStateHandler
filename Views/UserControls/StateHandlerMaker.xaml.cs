@@ -38,8 +38,9 @@ namespace EZFileStateHandler.Views.UserControls
             {
                 var profile = new Profile(ProfileLocation.Text, Src.Text, Dest.Text);
 
-                //AppSettings.Settings.Profiles.Add(profile);
-                //AppSettings.SaveSettings();
+                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+                appSettings.Settings.Profiles.Add(profile);
+                appSettings.SaveSettings();
                 Status.Text = "Profile Successfully created";
             }
             catch (Exception ex)

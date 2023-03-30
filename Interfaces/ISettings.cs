@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using EZFileStateHandler.Models;
+using System.Collections.Generic;
 
 namespace EZFileStateHandler.Interfaces
 {
-    public interface IProfile
-    {
-        public string Name { get; set; }
-        public string Src { get; set; }
-        public string Dst { get; set; }
-    }
-
     public interface ISettings
     {
-        public List<IProfile> Profiles { get; set; }
+        public List<Profile> Profiles { get; set; }
     }
 }
