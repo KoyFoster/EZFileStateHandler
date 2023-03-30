@@ -22,31 +22,13 @@ namespace EZFileStateHandler.Models
         }
     }
 
-    public class Settings : ISettings, INotifyPropertyChanged
+    public class Settings : ISettings
     {
-        private List<IProfile> profiles;
-        public List<IProfile> Profiles 
-        { 
-            get => profiles; 
-            set
-            {
-                profiles = value;
-                OnPropertyChanged(nameof(Profiles));
-            }
-        }
-
-        public List<string> ProfileNames => Profiles.Select(p => p.Name).ToList();
+        public List<IProfile> Profiles { get; set; }
 
         public Settings()
         {
             Profiles = new List<IProfile>();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
