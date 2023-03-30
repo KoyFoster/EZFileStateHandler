@@ -6,6 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label />            
+        <Grid.RowDefinitions >
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0">Profiles</Label>
+        <StackPanel Grid.Row="1" Name="ProfileList" />
     </Grid>
 </UserControl>
