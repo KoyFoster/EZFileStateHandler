@@ -8,5 +8,10 @@ namespace EZFileStateHandler.Views
         {
             InitializeComponent();
         }
+
+        private void StateHandlerMaker_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

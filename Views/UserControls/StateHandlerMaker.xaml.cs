@@ -28,59 +28,23 @@ namespace EZFileStateHandler.Views.UserControls
         public StateHandlerMaker()
         {
             InitializeComponent();
-
+            btnCreateProfile.IsEnabled = false;
         }
 
-        public void CreateProfile(object sender, RoutedEventArgs e)
-        {
-            ProfileMaker.IsEnabled = false;
-            try
-            {
-                var profile = new Profile(ProfileLocation.Text, Src.Text, Dest.Text);
+        // Enable CreateProfile
+        private bool IsEnabledCreateProfile => !(tbSrc.Text.Length == 0 || tbDest.Text.Length == 0 || tbProfileName.Text.Length == 0 || tbProfileLocation.Text.Length == 0);
 
-                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
-                appSettings.Settings.Profiles.Add(profile);
-                appSettings.SaveSettings();
-                Status.Text = "Profile Successfully created";
-            }
-            catch (Exception ex)
-            {
-                Status.Text = $"Error: {ex.Message}";
-            }
-            finally
-            {
-                ProfileMaker.IsEnabled = true;
-            }
+        private void ClearAllFields()
+        {
+            tbSrc.Clear();
+            tbDest.Clear();
+            tbProfileName.Clear();
+            tbProfileLocation.Clear();
+            EnableCreateProfile();
         }
-
-        public static async Task CopyFileAsync(string srcFile, string destFile)
+        private void EnableCreateProfile()
         {
-
-            // Open the source file for reading
-            using (var sourceStream = new FileStream(srcFile, FileMode.Open, FileAccess.Read))
-            {
-                // Open the destination file for writing
-                using (var destinationStream = new FileStream(destFile, FileMode.Create, FileAccess.Write))
-                {
-                    // Copy the file asynchronously
-                    await sourceStream.CopyToAsync(destinationStream);
-                }
-            }
-
-            // Check if the file was successfully copied
-            if (File.Exists(destFile))
-            {
-                // File was successfully copied
-            }
-            else
-            {
-                // File was not copied
-            }
-        }
-
-        public static async Task CopyFile(string srcFile, string destFile)
-        {
-            await CopyFileAsync(srcFile, destFile);
+            btnCreateProfile.IsEnabled = IsEnabledCreateProfile;
         }
 
         private void btnSrc_SelectFile(object sender, RoutedEventArgs e)
@@ -97,9 +61,11 @@ namespace EZFileStateHandler.Views.UserControls
             // If the user selects a file, get the file path
             if (result == true)
             {
-                Src.Text = openFileDialog.FileName;
+                tbSrc.Text = openFileDialog.FileName;
                 // Do something with the file path
             }
+
+            EnableCreateProfile();
         }
 
         private void btnDst_SelectFile(object sender, RoutedEventArgs e)
@@ -116,9 +82,56 @@ namespace EZFileStateHandler.Views.UserControls
             // If the user selects a file, get the file path
             if (result == true)
             {
-                Dest.Text = openFileDialog.FileName;
+                tbDest.Text = openFileDialog.FileName;
                 // Do something with the file path
             }
+
+        }
+
+        public void CreateProfile(object sender, RoutedEventArgs e)
+        {
+            ProfileMaker.IsEnabled = false;
+            try
+            {
+                var profile = new Profile(tbProfileLocation.Text, tbSrc.Text, tbDest.Text);
+
+                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+                appSettings.Settings.Profiles.Add(profile);
+                appSettings.SaveSettings();
+                Status.Text = "Profile Successfully created";
+                // Clear Fields
+
+                ClearAllFields();
+            }
+            catch (Exception ex)
+            {
+                Status.Text = $"Error: {ex.Message}";
+                btnCreateProfile.IsEnabled = false;
+            }
+            finally
+            {
+                ProfileMaker.IsEnabled = true;
+            }
+        }
+
+        private void tbSrc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableCreateProfile();
+        }
+
+        private void tbDest_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableCreateProfile();
+        }
+
+        private void tbProfileName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableCreateProfile();
+        }
+
+        private void tbProfileLocation_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableCreateProfile();
         }
     }
 }

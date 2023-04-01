@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZFileStateHandler.Views.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="260.027">
+             d:DesignHeight="450" d:DesignWidth="272">
     <Grid Name="ProfileMaker">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -20,24 +20,28 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
-        <TextBlock  Grid.Row="0" Name="Status" Text="" ></TextBlock>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Width="72" HorizontalContentAlignment="Right">Source:</Label>
-            <TextBox Name="Src" Width="150" Margin="4"  />
+            <Label Width="80" HorizontalContentAlignment="Right">Source:</Label>
+            <TextBox Name="tbSrc" Width="150" Margin="4" TextChanged="tbSrc_TextChanged"  />
             <Button Name="btnSelSrc" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnSrc_SelectFile" />
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <Label Width="72" HorizontalContentAlignment="Right">Destination:</Label>
-            <TextBox Name="Dest" Width="150" Margin="4" />
+            <Label Width="80" HorizontalContentAlignment="Right">Destination:</Label>
+            <TextBox Name="tbDest" Width="150" Margin="4" TextChanged="tbDest_TextChanged" />
             <Button Name="btnSelDest" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnDst_SelectFile" />
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Label Width="72" HorizontalContentAlignment="Right">Profile:</Label>
-            <TextBox Name="ProfileLocation" Width="150" Margin="4" />
+            <Label Width="80" HorizontalContentAlignment="Right">Profile Name:</Label>
+            <TextBox Name="tbProfileName" Width="150" Margin="4" TextChanged="tbProfileName_TextChanged" />
         </StackPanel>
-        <Button Grid.Row="5" Name="btnCreateProfile" Click="CreateProfile" >Create Profile</Button>
-        <TextBlock  Grid.Row="6" Name="ExampleFileStructure" Text="" ></TextBlock>
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
+            <Label Width="80" HorizontalContentAlignment="Right">Profile:</Label>
+            <TextBox Name="tbProfileLocation" Width="150" Margin="4" TextChanged="tbProfileLocation_TextChanged" />
+        </StackPanel>
+        <Button Grid.Row="6" Name="btnCreateProfile" Click="CreateProfile" IsEnabled="False">Create Profile</Button>
+        
+        <TextBlock  Grid.Row="7" Name="Status" Text="-" ></TextBlock>
+        <TextBlock  Grid.Row="8" Name="ExampleFileStructure" Text="" ></TextBlock>
     </Grid>
 </UserControl>

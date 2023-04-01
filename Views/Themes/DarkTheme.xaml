@@ -15,8 +15,18 @@
     <!-- Convert the AccentColor to a SolidColorBrush -->
     <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentColor}" />
 
+    <!-- Default Disable Style -->
+    <Style x:Key="DisabledStyle" TargetType="{x:Type FrameworkElement}">
+        <Setter Property="Opacity" Value="1"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Define the Button style -->
-    <Style TargetType="Button">
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource DisabledStyle}">
         <Setter Property="Background" Value="{StaticResource AccentColorBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0" />
@@ -70,4 +80,5 @@
         <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundColorBrush}" />
     </Style>
+    
 </ResourceDictionary>

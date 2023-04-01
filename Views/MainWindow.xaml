@@ -17,7 +17,7 @@
 
         <TabControl Grid.Row="1"  >
             <TabItem Header="Tab 1">
-                <usercontrols:StateHandlerMaker  />
+                <usercontrols:StateHandlerMaker Loaded="StateHandlerMaker_Loaded"  />
             </TabItem>
             <TabItem Header="Tab 2">
                 <usercontrols:ProfileViewer  />
