@@ -23,16 +23,21 @@ namespace EZFileStateHandler.Views.UserControls
         public ProfileViewer()
         {
             InitializeComponent();
+            Reload();
+        }
 
+        public void Reload()
+        {
             // Initialise profile list
             AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
             var profiles = appSettings.Settings.Profiles;
-            foreach(var profile in profiles)
+            foreach (var profile in profiles)
             {
                 var label = new Label();
                 label.Content = profile.Name;
                 ProfileList.Children.Add(label);
             }
         }
+
     }
 }

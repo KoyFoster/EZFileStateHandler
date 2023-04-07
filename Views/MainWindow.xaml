@@ -15,12 +15,14 @@
 
         <usercontrols:MenuBar Grid.Row="0" />
 
-        <TabControl Grid.Row="1"  >
-            <TabItem Header="Tab 1">
-                <usercontrols:StateHandlerMaker Loaded="StateHandlerMaker_Loaded"  />
+        <TabControl Name="MainTabs" Grid.Row="1" SelectionChanged="TabControl_SelectionChanged" >
+            <TabItem Name="tabCreateProfile" Header="Create Profile">
+                <usercontrols:StateHandlerMaker x:Name="StateMaker" Loaded="StateHandlerMaker_Loaded"  />
             </TabItem>
-            <TabItem Header="Tab 2">
-                <usercontrols:ProfileViewer  />
+            <TabItem Name="tabViewProfiles" Header="View Profiles">
+                <!--<usercontrols:ProfileViewer Name="Profiles" Loaded="StateHandlerMaker_Loaded"  />-->
+            </TabItem>
+            <TabItem Name="tabViewStates" Header="View States">
             </TabItem>
         </TabControl>
     </Grid>
