@@ -20,7 +20,7 @@
                 <usercontrols:StateHandlerMaker x:Name="StateMaker" Loaded="StateHandlerMaker_Loaded"  />
             </TabItem>
             <TabItem Name="tabViewProfiles" Header="View Profiles">
-                <!--<usercontrols:ProfileViewer Name="Profiles" Loaded="StateHandlerMaker_Loaded"  />-->
+                <usercontrols:ProfileViewer x:Name="Profiles"   />
             </TabItem>
             <TabItem Name="tabViewStates" Header="View States">
             </TabItem>

@@ -28,7 +28,7 @@ namespace EZFileStateHandler.Views
             else if (selectedTab == tabViewProfiles)
             {
                 // Reload the contents of the tab
-                // Profiles.Reload();
+                Profiles.Reload();
             }
         }
     }

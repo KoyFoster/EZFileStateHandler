@@ -28,14 +28,22 @@ namespace EZFileStateHandler.Views.UserControls
 
         public void Reload()
         {
-            // Initialise profile list
-            AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
-            var profiles = appSettings.Settings.Profiles;
-            foreach (var profile in profiles)
+            try
             {
-                var label = new Label();
-                label.Content = profile.Name;
-                ProfileList.Children.Add(label);
+                // Initialise profile list
+                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+                var profiles = appSettings.Settings.Profiles;
+                ProfileList.Children.Clear();
+                foreach (var profile in profiles)
+                {
+                    var label = new Label();
+                    label.Content = profile.Name;
+                    ProfileList.Children.Add(label);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
