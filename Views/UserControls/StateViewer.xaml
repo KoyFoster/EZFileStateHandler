@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="EZFileStateHandler.Views.UserControls.StateViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="512">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0">States</Label>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Name="btnQuickState" Content="Quick Save" Click="btnQuickState_Click" />
+            <Button Grid.Column="1" Name="btBackup" Content="Make Backup" Click="btBackup_Click" />
+            <Button Grid.Column="2" Name="btnQuickRestore" Content="Quick Restore" Click="btnQuickRestore_Click" />
+            <Button Grid.Column="3" Name="btnBackupRestore" Content="Backup Restore" Click="btnBackupRestore_Click" />
+
+            <Button Grid.Column="4" Name="btnRevertRestore" Content="Revert Restore" Click="btnRevertRestore_Click" />
+        </Grid>
+        <Label Grid.Row="2" Name="ActionStatus" Content="" />
+        <Label Grid.Row="3">Quick States</Label>
+        <StackPanel Grid.Row="4" Name="QuickList" />
+        <Label Grid.Row="5">Original States</Label>
+        <StackPanel Grid.Row="6" Name="OriginalList" />
+        <Label Grid.Row="7">Backups</Label>
+        <StackPanel Grid.Row="8" Name="BackupList" />
+    </Grid>
+</UserControl>
