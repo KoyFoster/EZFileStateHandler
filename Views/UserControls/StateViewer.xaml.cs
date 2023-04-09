@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZFileStateHandler.ViewModels;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -11,6 +12,13 @@ namespace EZFileStateHandler.Views.UserControls
     /// </summary>
     public partial class StateViewer : UserControl
     {
+        // Directories
+        // Source
+        DirectoryTrackerViewModel dtvmSource { get; set; }
+        DirectoryTrackerViewModel dtvmPrevious { get; set; }
+        DirectoryTrackerViewModel dtvmBackups { get; set; }
+        DirectoryTrackerViewModel dtvmStates { get; set; }
+
         private string stateDir = "";
         private string transferFileDir = "";
         private string stateQuickDir = "";
@@ -26,20 +34,30 @@ namespace EZFileStateHandler.Views.UserControls
         private string GetPath(string dir, string file) => (file != "" ? $"{file}/{sourceFile}" : dir);
         private string GetSource() => GetPath(sourceDir, sourceFile);
         private string GetPrevious() => GetPath(statePreviousDir, sourceFile);
-        private string GetSpace(string file) => GetPath(transferFileDir, file);
+        private string GetSpace(string file = "") => GetPath(transferFileDir, file);
+
 
         public StateViewer()
         {
             InitializeComponent();
 
+            sourceDir = @"C:\Users\Koy (4-14-2019)\Downloads";//\Test Dir";
             stateDir = @"C:\Users\Koy (4-14-2019)\Downloads\ER States";
             transferFileDir = stateDir + @"\Space";
             stateQuickDir = stateDir + @"\Quick";
             statePreviousDir = stateDir + @"\Previous";
             stateBackupDir = stateDir + @"\Backups";
+            sourceFile = "A.txt";
 
-            sourceDir = @"C:\Users\Koy (4-14-2019)\Downloads\Test Dir";
-            // sourceFile = "A.txt";
+            // Init directories
+            dtvmSource = new DirectoryTrackerViewModel(sourceDir, sourceFile);
+
+            dtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
+            
+            dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
+            btnRevertRestore.DataContext = dtvmPrevious;
+
+            dtvmBackups = new DirectoryTrackerViewModel($"{stateDir}\\Backups");
 
             InitializeFileStructure();
 
@@ -50,20 +68,21 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void InitializeFileStructure()
         {
-            Directory.CreateDirectory(stateDir);
-            Directory.CreateDirectory(stateQuickDir);
-            Directory.CreateDirectory(statePreviousDir);
-            Directory.CreateDirectory(stateBackupDir);
+            if (!Directory.Exists(stateDir))
+                Directory.CreateDirectory(stateDir);
+
+            if (!Directory.Exists(transferFileDir))
+                Directory.CreateDirectory(transferFileDir);
+
+            if (!Directory.Exists(stateQuickDir))
+                Directory.CreateDirectory(stateQuickDir);
+
+            if (!Directory.Exists(statePreviousDir))
+                btnRevertRestore.IsEnabled = false;
+
+            if (!Directory.Exists(stateBackupDir))
+                Directory.CreateDirectory(stateBackupDir);
             InitializeQuickState();
-        }
-
-        private string? GetMostRecentFile(string dir, bool checkSubDir = false)
-        {
-            DirectoryInfo directoryInfo = new DirectoryInfo(dir);
-            if (directoryInfo.GetFileSystemInfos("*.*").Length == 0) return null;
-            FileSystemInfo fileSystemInfo = directoryInfo.GetFileSystemInfos("*.*")[0];
-
-            return fileSystemInfo.Name;
         }
 
         private void InitializeQuickState()
@@ -71,7 +90,7 @@ namespace EZFileStateHandler.Views.UserControls
             if (DirValidation(stateQuickDir, fastStateName)) return;
 
             // If does not exist, create one of the most recent quick state
-            string? mostRecentFile = GetMostRecentFile(stateQuickDir);
+            string? mostRecentFile = dtvmStates.GetMostRecentFile();
 
             if (mostRecentFile == null)
             {
@@ -136,10 +155,10 @@ namespace EZFileStateHandler.Views.UserControls
                 return false;
             }
             // Confirm source file exists if one is given
-            if (file != "" && !File.Exists($"{dir}/{file}"))
+            var filePath = $"{dir}\\{file}";
+            if (file != "" && !File.Exists(filePath))
             {
-                var fileName = file != "" ? $"File {file}" : "Source file";
-                ActionStatus.Content = $"{fileName} does not exist.";
+                ActionStatus.Content = $"{filePath} does not exist.";
                 return false;
             }
             return true;
@@ -157,14 +176,44 @@ namespace EZFileStateHandler.Views.UserControls
         {
             try
             {
-                // From Source To Space
+                // From Source To Space, Previous to Source, Space to Previous
                 if (sourceFile == "")
                 {
-                    Directory.Move(GetSource(), GetSpace(sourceFile));
+                    if (Directory.Exists(GetSpace())) Directory.Delete(GetSpace(), true);
+                    Directory.Move(GetSource(), GetSpace());
                     // From Previous To Source
                     Directory.Move(GetPrevious(), GetSource());
+                    //// From Space To Previous
+                    Directory.Move(GetSpace(), GetPrevious());
+                }
+                else
+                {
+                    File.Move(GetSource(), GetSpace(sourceFile));
+                    // From Previous To Source
+                    File.Move(GetPrevious(), GetSource());
                     // From Space To Previous
-                    Directory.Move(GetSpace(sourceFile), GetPrevious());
+                    File.Move(GetSpace(sourceFile), GetPrevious());
+                }
+            }
+            catch (Exception ex)
+            {
+                ActionStatus.Content = ex.Message;
+            }
+        }
+
+        private void RestoreFromPrevious()
+        {
+            try
+            {
+                // From Source To Space, Previous to Source, Space to Previous
+                if (sourceFile == "")
+                {
+                    if (Directory.Exists(GetSpace())) Directory.Delete(GetSpace(), true);
+                    Directory.Move(GetSource(), GetSpace());
+                    // From Previous To Source
+                    Directory.Move(GetPrevious(), GetSource());
+                    //// From Space To Previous
+                    Directory.Move(GetSpace(), GetPrevious());
                 }
                 else
                 {
@@ -268,7 +317,7 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void btnRevertRestore_Click(object sender, RoutedEventArgs e)
         {
-            Restore();
+            RestoreFromPrevious();
         }
     }
 }
