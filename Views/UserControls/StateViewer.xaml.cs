@@ -21,7 +21,6 @@ namespace EZFileStateHandler.Views.UserControls
 
         private string stateDir = "";
         private string transferFileDir = "";
-        private string stateQuickDir = "";
         private string fastStateName = "FastState";
         private string statePreviousDir = "";
         private string stateBackupDir = "";
@@ -44,7 +43,6 @@ namespace EZFileStateHandler.Views.UserControls
             sourceDir = @"C:\Users\Koy (4-14-2019)\Downloads";//\Test Dir";
             stateDir = @"C:\Users\Koy (4-14-2019)\Downloads\ER States";
             transferFileDir = stateDir + @"\Space";
-            stateQuickDir = stateDir + @"\Quick";
             statePreviousDir = stateDir + @"\Previous";
             stateBackupDir = stateDir + @"\Backups";
             sourceFile = "A.txt";
@@ -74,31 +72,15 @@ namespace EZFileStateHandler.Views.UserControls
             if (!Directory.Exists(transferFileDir))
                 Directory.CreateDirectory(transferFileDir);
 
-            if (!Directory.Exists(stateQuickDir))
-                Directory.CreateDirectory(stateQuickDir);
+            //if (!Directory.Exists(stateQuickDir))
+            //    Directory.CreateDirectory(stateQuickDir);
 
             if (!Directory.Exists(statePreviousDir))
                 btnRevertRestore.IsEnabled = false;
 
             if (!Directory.Exists(stateBackupDir))
                 Directory.CreateDirectory(stateBackupDir);
-            InitializeQuickState();
-        }
-
-        private void InitializeQuickState()
-        {
-            if (DirValidation(stateQuickDir, fastStateName)) return;
-
-            // If does not exist, create one of the most recent quick state
-            string? mostRecentFile = dtvmStates.GetMostRecentFile();
-
-            if (mostRecentFile == null)
-            {
-                ActionStatus.Content = "No files";
-                return;
-            }
-
-            this.Copy($"{stateQuickDir}", fastStateName);
+            // InitializeQuickState();
         }
 
         private string[] GetFilesDirectory(string dir)
@@ -113,7 +95,12 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void LoadQuickList()
         {
-            Load(QuickList, stateQuickDir);
+            foreach(string file in dtvmStates.GetFiles())
+            {
+                var label = new Label();
+                label.Content = file;
+                QuickList.Children.Add(label);
+            }
         }
         private void LoadPreviousList()
         {
@@ -282,7 +269,8 @@ namespace EZFileStateHandler.Views.UserControls
             try
             {
                 if (!SourceValidation()) return;
-                this.Copy(stateQuickDir);
+                // this.Copy(stateQuickDir);
+                dtvmStates.Add(dtvmSource.GetPath(), true, true);
             }
             catch (Exception ex)
             {

@@ -46,7 +46,7 @@ namespace EZFileStateHandler.ViewModels
 
             if(ext == "")
                 return fullPath;
-            return $"${fullPath}\\{ext}";
+            return $"{fullPath}{ext}";
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace EZFileStateHandler.ViewModels
 
             if (copy)
             {
-                File.Copy(src, directory, overwrite);
+                File.Copy(src, dest, overwrite);
             }
             else
             {
-                File.Move(src, directory, overwrite);
+                File.Move(src, dest, overwrite);
             }
         }
 
@@ -150,6 +150,22 @@ namespace EZFileStateHandler.ViewModels
             FileSystemInfo fileSystemInfo = directoryInfo.GetFileSystemInfos("*.*")[0];
 
             return fileSystemInfo.Name;
+        }
+
+        public IEnumerable<string?> GetFiles()
+        {
+            if (IsFile())
+            {
+                Console.WriteLine($"GetMostRecentFile Error: {GetPath()} is not a directory.");
+                yield return null;
+            }
+            else
+            {
+                foreach (string filePath in Directory.EnumerateFiles(GetPath()))
+                {
+                    yield return filePath;
+                }
+            }
         }
 
         public bool DoesExist
