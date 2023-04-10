@@ -104,11 +104,11 @@ namespace EZFileStateHandler.Views.UserControls
         }
         private void LoadPreviousList()
         {
-            Load(PreviousList, statePreviousDir);
+            // Load(PreviousList, statePreviousDir);
         }
         private void LoadBackupList()
         {
-            Load(BackupList, stateBackupDir);
+            // Load(BackupList, stateBackupDir);
         }
 
         public void Load(StackPanel panel, string dir)

@@ -161,9 +161,9 @@ namespace EZFileStateHandler.ViewModels
             }
             else
             {
-                foreach (string filePath in Directory.EnumerateFiles(GetPath()))
+                foreach (string filePath in Directory.EnumerateFileSystemEntries(GetPath(), "*", SearchOption.TopDirectoryOnly))
                 {
-                    yield return filePath;
+                    yield return Path.GetFileName(filePath);
                 }
             }
         }
