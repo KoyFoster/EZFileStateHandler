@@ -50,9 +50,11 @@ namespace EZFileStateHandler.Views.UserControls
 
             dtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
             QuickList.DataContext = dtvmStates;
+            QuickListEmpty.DataContext = dtvmBackups;
 
             dtvmBackups = new DirectoryTrackerViewModel($"{stateDir}\\Backups");
             BackupList.DataContext = dtvmBackups;
+            BackupListEmpty.DataContext = dtvmBackups;
 
             dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
             btnRevertRestore.DataContext = dtvmPrevious;

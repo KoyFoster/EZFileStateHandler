@@ -24,8 +24,8 @@ namespace EZFileStateHandler.ViewModels
         {
             this.directory = dir;
             this.file = file;
-            _doesExist = Directory.Exists(directory);
-            _hasNoFiles = GetFiles().FirstOrDefault() == null;
+            DoesExist = Directory.Exists(directory);
+            HasNoFiles = GetFiles().FirstOrDefault() == null;
         }
 
         public void Refresh()
@@ -183,8 +183,7 @@ namespace EZFileStateHandler.ViewModels
                 if (_doesExist != value)
                 {
                     _doesExist = value;
-                    // OnPropertyChanged(nameof(DoesExist));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DoesExist)));
+                    OnPropertyChanged(nameof(DoesExist));
                 }
             }
         }
@@ -197,8 +196,7 @@ namespace EZFileStateHandler.ViewModels
                 if (_hasNoFiles != value)
                 {
                     _hasNoFiles = value;
-                    // OnPropertyChanged(nameof(HasNoFiles));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasNoFiles)));
+                    OnPropertyChanged(nameof(HasNoFiles));
                 }
             }
         }

@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using EZFileStateHandler.Helpers;
+using System.Windows;
 using System.Windows.Controls;
-
 namespace EZFileStateHandler.Views
 {
     public partial class MainWindow : Window
@@ -12,7 +12,8 @@ namespace EZFileStateHandler.Views
 
         private void StateHandlerMaker_Loaded(object sender, RoutedEventArgs e)
         {
-
+            // Get the screen where you want to display the window
+            ScreenHelper.PositionWindow(this, sender, e);
         }
 
         private void TabControl_SelectionChanged(object sender, RoutedEventArgs e)

@@ -47,7 +47,7 @@
             <Button Grid.Row="3" Grid.Column="0" Content="Quick Restore Selected" />
             <Label Grid.Row="5" Grid.Column="0">Quick States</Label>
             <StackPanel Grid.Row="6" Grid.Column="0" Name="QuickList" >
-                <TextBox Text="There are no quick states." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
+                <TextBox Name="QuickListEmpty"  Text="There are no quick states." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
             </StackPanel>
 
             <!-- Backups Column -->
@@ -57,7 +57,7 @@
             <Button Grid.Row="3" Grid.Column="1" Content="Backup Restore Selected" />
             <Label Grid.Row="5"  Grid.Column="1">Backups</Label>
             <StackPanel Grid.Row="6"  Grid.Column="1" Name="BackupList" >
-                <TextBox Text="There are no backups." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
+                <TextBox Name="BackupListEmpty" Text="There are no backups." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
             </StackPanel>
 
             <!-- Misc Column -->
