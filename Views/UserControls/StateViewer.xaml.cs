@@ -21,7 +21,6 @@ namespace EZFileStateHandler.Views.UserControls
 
         private string stateDir = "";
         private string transferFileDir = "";
-        private string fastStateName = "FastState";
         private string statePreviousDir = "";
         private string stateBackupDir = "";
 
@@ -34,7 +33,6 @@ namespace EZFileStateHandler.Views.UserControls
         private string GetSource() => GetPath(sourceDir, sourceFile);
         private string GetPrevious() => GetPath(statePreviousDir, sourceFile);
         private string GetSpace(string file = "") => GetPath(transferFileDir, file);
-
 
         public StateViewer()
         {
@@ -51,17 +49,27 @@ namespace EZFileStateHandler.Views.UserControls
             dtvmSource = new DirectoryTrackerViewModel(sourceDir, sourceFile);
 
             dtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
-            
-            dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
-            btnRevertRestore.DataContext = dtvmPrevious;
+            QuickList.DataContext = dtvmStates;
 
             dtvmBackups = new DirectoryTrackerViewModel($"{stateDir}\\Backups");
+            BackupList.DataContext = dtvmBackups;
+
+            dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
+            btnRevertRestore.DataContext = dtvmPrevious;
 
             InitializeFileStructure();
 
             LoadQuickList();
-            LoadPreviousList();
             LoadBackupList();
+        }
+
+        public void Refresh()
+        {
+            dtvmPrevious.Refresh();
+            LoadQuickList();
+            dtvmStates.Refresh();
+            LoadBackupList();
+            dtvmBackups.Refresh();
         }
 
         private void InitializeFileStructure()
@@ -95,20 +103,23 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void LoadQuickList()
         {
-            foreach(string file in dtvmStates.GetFiles())
+            QuickList.Children.Clear();
+            foreach (string file in dtvmStates.GetFiles())
             {
                 var label = new Label();
                 label.Content = file;
                 QuickList.Children.Add(label);
             }
         }
-        private void LoadPreviousList()
-        {
-            // Load(PreviousList, statePreviousDir);
-        }
         private void LoadBackupList()
         {
-            // Load(BackupList, stateBackupDir);
+            BackupList.Children.Clear();
+            foreach (string file in dtvmBackups.GetFiles())
+            {
+                var label = new Label();
+                label.Content = file;
+                BackupList.Children.Add(label);
+            }
         }
 
         public void Load(StackPanel panel, string dir)
@@ -306,6 +317,11 @@ namespace EZFileStateHandler.Views.UserControls
         private void btnRevertRestore_Click(object sender, RoutedEventArgs e)
         {
             RestoreFromPrevious();
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
         }
     }
 }

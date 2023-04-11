@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:local="clr-namespace:EZFileStateHandler.Converters" xmlns:viewmodels="clr-namespace:EZFileStateHandler.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:DirectoryTrackerViewModel}"
              d:DesignHeight="450" d:DesignWidth="579.712">
-    <Grid>        
-        
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -20,28 +25,46 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0">States</Label>
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Name="btnQuickState" Content="Quick Save" Click="btnQuickState_Click" />
-            <Button Grid.Column="1" Name="btBackup" Content="Make Backup" Click="btBackup_Click" />
-            
-            <Button Grid.Column="2" Name="btnQuickRestore" Content="Quick Restore Last State" Click="btnQuickRestore_Click" />
-            <Button Grid.Column="3" Name="btnBackupRestore" Content="Backup Restore" Click="btnBackupRestore_Click" />
-            <Button Grid.Column="4" Name="btnRevertRestore" IsEnabled="{Binding DoesExist}" Content="Revert Restore" Click="btnRevertRestore_Click" />
+            <!-- Quick Column -->
+            <Label Grid.Row="0" Grid.Column="0">States</Label>
+            <Button Grid.Row="1" Grid.Column="0" Name="btnQuickState" Content="Quick Save" Click="btnQuickState_Click" />
+            <Button Grid.Row="2" Grid.Column="0" Name="btnQuickRestore" Content="Quick Restore Last State" Click="btnQuickRestore_Click" />
+            <Button Grid.Row="3" Grid.Column="0" Content="Quick Restore Selected" />
+            <Label Grid.Row="5" Grid.Column="0">Quick States</Label>
+            <StackPanel Grid.Row="6" Grid.Column="0" Name="QuickList" >
+                <TextBox Text="There are no quick states." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
+            </StackPanel>
+
+            <!-- Backups Column -->
+            <Label Grid.Row="0" Grid.Column="1">Backups</Label>
+            <Button Grid.Row="1" Grid.Column="1" Name="btBackup" Content="Make Backup" Click="btBackup_Click" />
+            <Button Grid.Row="2" Grid.Column="1" Name="btnBackupRestore" Content="Restore Last Backup" Click="btnBackupRestore_Click" />
+            <Button Grid.Row="3" Grid.Column="1" Content="Backup Restore Selected" />
+            <Label Grid.Row="5"  Grid.Column="1">Backups</Label>
+            <StackPanel Grid.Row="6"  Grid.Column="1" Name="BackupList" >
+                <TextBox Text="There are no backups." Visibility="{Binding HasNoFiles, Converter={StaticResource boolToVisibilityConverter}}" />
+            </StackPanel>
+
+            <!-- Misc Column -->
+            <Label Grid.Row="0" Grid.Column="2">Misc</Label>
+            <Button Grid.Row="1" Grid.Column="2" Name="btnRevertRestore" IsEnabled="{Binding DoesExist}" Content="Revert Restore" Click="btnRevertRestore_Click" />
+            <Button Grid.Row="2" Grid.Column="2" Name="btnRefresh" Content="Refresh" Click="btnRefresh_Click" />
+            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Name="ActionStatus" Content="[Standby]" />
         </Grid>
-        <Label Grid.Row="2" Name="ActionStatus" Content="" />
-        <Label Grid.Row="3">Quick States</Label>
-        <StackPanel Grid.Row="4" Name="QuickList" />
-        <Label Grid.Row="5">Previous States</Label>
-        <StackPanel Grid.Row="6" Name="PreviousList" />
-        <Label Grid.Row="7">Backups</Label>
-        <StackPanel Grid.Row="8" Name="BackupList" />
     </Grid>
 </UserControl>

@@ -11,6 +11,7 @@ namespace EZFileStateHandler.ViewModels
     public class DirectoryTrackerViewModel : INotifyPropertyChanged
     {
         private bool _doesExist;
+        private bool _hasNoFiles;
         private string directory;
         private string file;
 
@@ -24,6 +25,13 @@ namespace EZFileStateHandler.ViewModels
             this.directory = dir;
             this.file = file;
             _doesExist = Directory.Exists(directory);
+            _hasNoFiles = GetFiles().FirstOrDefault() == null;
+        }
+
+        public void Refresh()
+        {
+            DoesExist = Directory.Exists(directory);
+            HasNoFiles = GetFiles().FirstOrDefault() == null;
         }
 
         /// <summary>
@@ -44,7 +52,7 @@ namespace EZFileStateHandler.ViewModels
             string TimeStamp = DateTime.Now.ToString("HH+mm+ss");
             string fullPath = $"{newDir}\\{TimeStamp}";
 
-            if(ext == "")
+            if (ext == "")
                 return fullPath;
             return $"{fullPath}{ext}";
         }
@@ -55,7 +63,7 @@ namespace EZFileStateHandler.ViewModels
         /// </summary>
         public void Add(string src, bool copy, bool overwrite, Func<string, string, string>? namingConvetion = null)
         {
-            if(IsFile())
+            if (IsFile())
             {
                 Console.WriteLine($"Add Error: {GetPath()} is not a directory.");
                 return;
@@ -152,14 +160,13 @@ namespace EZFileStateHandler.ViewModels
             return fileSystemInfo.Name;
         }
 
-        public IEnumerable<string?> GetFiles()
+        public IEnumerable<string> GetFiles()
         {
             if (IsFile())
             {
                 Console.WriteLine($"GetMostRecentFile Error: {GetPath()} is not a directory.");
-                yield return null;
             }
-            else
+            else if (Directory.Exists(GetPath()))
             {
                 foreach (string filePath in Directory.EnumerateFileSystemEntries(GetPath(), "*", SearchOption.TopDirectoryOnly))
                 {
@@ -176,7 +183,22 @@ namespace EZFileStateHandler.ViewModels
                 if (_doesExist != value)
                 {
                     _doesExist = value;
-                    OnPropertyChanged(nameof(DoesExist));
+                    // OnPropertyChanged(nameof(DoesExist));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DoesExist)));
+                }
+            }
+        }
+
+        public bool HasNoFiles
+        {
+            get { return _hasNoFiles; }
+            set
+            {
+                if (_hasNoFiles != value)
+                {
+                    _hasNoFiles = value;
+                    // OnPropertyChanged(nameof(HasNoFiles));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasNoFiles)));
                 }
             }
         }
