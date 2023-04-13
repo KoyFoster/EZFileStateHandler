@@ -29,7 +29,5 @@ namespace EZFileStateHandler
         {
             Helpers.LocalStorage.SaveSettings(Settings);
         }
-
-
     }
 }

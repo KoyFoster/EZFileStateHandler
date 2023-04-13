@@ -5,26 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              xmlns:local="clr-namespace:EZFileStateHandler.Converters" xmlns:viewmodels="clr-namespace:EZFileStateHandler.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:DirectoryTrackerViewModel}"
-             d:DesignHeight="450" d:DesignWidth="579.712">
+             d:DesignHeight="450" Width="452">
     <UserControl.Resources>
         <local:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </UserControl.Resources>
-
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0">States</Label>
-        <Grid Grid.Row="1">
+        <Label Grid.Row="0">Profiles</Label>
+        <ComboBox Name="ProfileList" Grid.Row="1" SelectedIndex="0" SelectionChanged="ProfileList_SelectionChanged" >
+            <ComboBoxItem>No profiles</ComboBoxItem>
+        </ComboBox>
+        <Label Grid.Row="2">Quick States</Label>
+        <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

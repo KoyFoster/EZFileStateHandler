@@ -1,4 +1,5 @@
-﻿using EZFileStateHandler.ViewModels;
+﻿using EZFileStateHandler.Models;
+using EZFileStateHandler.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
@@ -34,19 +35,52 @@ namespace EZFileStateHandler.Views.UserControls
         private string GetPrevious() => GetPath(statePreviousDir, sourceFile);
         private string GetSpace(string file = "") => GetPath(transferFileDir, file);
 
+        // Profiles
+        private AppSettings AppSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+
         public StateViewer()
         {
             InitializeComponent();
+            LoadProfileList();
 
-            sourceDir = @"C:\Users\Koy (4-14-2019)\Downloads";//\Test Dir";
-            stateDir = @"C:\Users\Koy (4-14-2019)\Downloads\ER States";
+            var selectedProfile = GetSelectedProfile();
+            if(selectedProfile==null) return;
+            InitPaths(selectedProfile.Src, selectedProfile.Dst);
+
+            InitializeFileStructure();
+
+            LoadQuickList();
+            LoadBackupList();
+        }
+
+        public void InitPaths(string src, string stateDir)
+        {
+            // check source for if it is a file or directory
+            string? srcDir, srcFile;
+            // Very weak check at the moment
+            srcDir = Path.GetDirectoryName(src);
+            if (File.Exists(src)) srcFile = Path.GetFileName(src);
+            else srcFile = "";
+            
+            if(srcDir == null)
+            {
+                ActionStatus.Content = $"Invalid path in profile {src}";
+                return;
+            }
+
+            this.stateDir = stateDir;
+            this.sourceDir = srcDir;
+            this.sourceFile = srcFile;
+
+            // sourceDir = srcDir;//\Test Dir";
+            // stateDir = @"C:\Users\Koy (4-14-2019)\Downloads\ER States";
             transferFileDir = stateDir + @"\Space";
             statePreviousDir = stateDir + @"\Previous";
             stateBackupDir = stateDir + @"\Backups";
-            sourceFile = "A.txt";
+            // sourceFile = "A.txt";
 
             // Init directories
-            dtvmSource = new DirectoryTrackerViewModel(sourceDir, sourceFile);
+            dtvmSource = new DirectoryTrackerViewModel(srcDir, srcFile);
 
             dtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
             QuickList.DataContext = dtvmStates;
@@ -58,11 +92,22 @@ namespace EZFileStateHandler.Views.UserControls
 
             dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
             btnRevertRestore.DataContext = dtvmPrevious;
+        }
 
-            InitializeFileStructure();
+        public void LoadProfileList()
+        {
+            if (AppSettings.Settings.Profiles.Count() > 0)
+            {
+                ProfileList.Items.Clear();
+                ProfileList.ItemsSource = AppSettings.Settings.Profiles.Select(x => x.Name);
+                ProfileList.SelectedIndex = 0;
+            }
+        }
 
-            LoadQuickList();
-            LoadBackupList();
+        public Profile? GetSelectedProfile()
+        {
+            if (AppSettings?.Settings?.Profiles == null || AppSettings.Settings.Profiles.Count() == 0) return null;
+            return AppSettings.Settings.Profiles.Where(x => x.Name == ProfileList.SelectedItem.ToString()).FirstOrDefault();
         }
 
         public void Refresh()
@@ -324,6 +369,14 @@ namespace EZFileStateHandler.Views.UserControls
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
+        }
+
+        private void ProfileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ProfileList.SelectedIndex < 0) return;
+            var selectedProfile = GetSelectedProfile();
+            if (selectedProfile == null) return;
+            InitPaths(selectedProfile.Src, selectedProfile.Dst);
         }
     }
 }
