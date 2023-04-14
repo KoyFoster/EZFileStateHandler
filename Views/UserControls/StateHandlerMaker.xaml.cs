@@ -1,21 +1,9 @@
-﻿using Microsoft.Win32;
+﻿using EZFileStateHandler.Models;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EZFileStateHandler.Models;
-using EZFileStateHandler.Interfaces;
+using Ookii.Dialogs.Wpf;
 
 namespace EZFileStateHandler.Views.UserControls
 {
@@ -32,14 +20,13 @@ namespace EZFileStateHandler.Views.UserControls
         }
 
         // Enable CreateProfile
-        private bool IsEnabledCreateProfile => !(tbSrc.Text.Length == 0 || tbDest.Text.Length == 0 || tbProfileName.Text.Length == 0 || tbProfileLocation.Text.Length == 0);
+        private bool IsEnabledCreateProfile => !(tbSrc.Text.Length == 0 || tbDest.Text.Length == 0 || tbProfileName.Text.Length == 0);
 
         private void ClearAllFields()
         {
             tbSrc.Clear();
             tbDest.Clear();
             tbProfileName.Clear();
-            tbProfileLocation.Clear();
             EnableCreateProfile();
         }
         private void EnableCreateProfile()
@@ -47,45 +34,63 @@ namespace EZFileStateHandler.Views.UserControls
             btnCreateProfile.IsEnabled = IsEnabledCreateProfile;
         }
 
+        private string SelectFileOrDirectory(bool selectFile = true)
+        {
+            if (selectFile)
+            {
+                // Create a new instance of the OpenFileDialog class
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.ShowReadOnly = true;
+
+                // Set the filter for the file types you want to allow the user to select
+                openFileDialog.Filter = "All Files (*.*)|*.*";
+
+                // Display the dialog box to the user
+                var result = openFileDialog.ShowDialog();
+
+                if (result == true) return openFileDialog.FileName;
+                return "";
+            }
+            else
+            {
+                // Create a new instance of the OpenFileDialog class
+                VistaFolderBrowserDialog openDirDialog = new VistaFolderBrowserDialog();
+
+                // Display the dialog box to the user
+                var result = openDirDialog.ShowDialog();
+                if (result == true) return openDirDialog.SelectedPath;
+            }
+            return "";
+        }
+
         private void btnSrc_SelectFile(object sender, RoutedEventArgs e)
         {
-            // Create a new instance of the OpenFileDialog class
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            // Set the filter for the file types you want to allow the user to select
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            // Display the dialog box to the user
-            bool? result = openFileDialog.ShowDialog();
-
-            // If the user selects a file, get the file path
-            if (result == true)
+            var result = SelectFileOrDirectory();
+            if (result != "")
             {
-                tbSrc.Text = openFileDialog.FileName;
-                // Do something with the file path
+                tbSrc.Text = result;
+                EnableCreateProfile();
             }
+        }
 
-            EnableCreateProfile();
+        private void btnSrc_SelectDir(object sender, RoutedEventArgs e)
+        {
+            var result = SelectFileOrDirectory(false);
+            if (result != "")
+            {
+                tbSrc.Text = result;
+                EnableCreateProfile();
+            }
         }
 
         private void btnDst_SelectFile(object sender, RoutedEventArgs e)
         {
-            // Create a new instance of the OpenFileDialog class
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            // Set the filter for the file types you want to allow the user to select
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            // Display the dialog box to the user
-            bool? result = openFileDialog.ShowDialog();
-
-            // If the user selects a file, get the file path
-            if (result == true)
+            var result = SelectFileOrDirectory();
+            if (result != "")
             {
-                tbDest.Text = openFileDialog.FileName;
-                // Do something with the file path
+                tbDest.Text = result;
+                EnableCreateProfile();
             }
-
         }
 
         public void CreateProfile(object sender, RoutedEventArgs e)
@@ -93,9 +98,9 @@ namespace EZFileStateHandler.Views.UserControls
             ProfileMaker.IsEnabled = false;
             try
             {
-                var profile = new Profile(tbProfileLocation.Text, tbSrc.Text, tbDest.Text);
+                var profile = new Profile(tbProfileName.Text, tbSrc.Text, tbDest.Text);
 
-                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+                AppSettings appSettings = (AppSettings)System.Windows.Application.Current.Resources["AppSettings"];
                 appSettings.Settings.Profiles.Add(profile);
                 appSettings.SaveSettings();
                 Status.Text = "Profile Successfully created";
