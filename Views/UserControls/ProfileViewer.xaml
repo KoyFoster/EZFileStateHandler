@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:EZFileStateHandler.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -10,8 +11,32 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0">Profiles</Label>
-        <StackPanel Grid.Row="1" Name="ProfileList" />
+        <my:ProfileComboBox Grid.Row="1" x:Name="ProfileList" />
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Width="80" HorizontalContentAlignment="Right">Source:</Label>
+            <TextBox IsReadOnly="True" Name="tbSrc" Width="150" Margin="4" TextChanged="tbSrc_TextChanged"  />
+            <Button Name="btnSelDirSrc" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnSelDirSrc_Click" />
+            <Button Name="btnSelFileSrc" IsEnabled="True" Margin="4" Content="📄" ToolTip="Select Source" Click="btnSelFileSrc_Click" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label Width="80" HorizontalContentAlignment="Right">Destination:</Label>
+            <TextBox IsReadOnly="True" Name="tbDest" Width="150" Margin="4" TextChanged="tbDest_TextChanged" />
+            <Button Name="btnSelDest" IsEnabled="True" Margin="4" Content="📁" ToolTip="Select Source" Click="btnSelDest_Click" />
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label Width="80" HorizontalContentAlignment="Right">Profile Name:</Label>
+            <TextBox Name="tbProfileName" Width="150" Margin="4" TextChanged="tbProfileName_TextChanged" />
+        </StackPanel>
+        <Label Grid.Row="5" Name="ProfileNameErrorMessage" Content="[Error Message Here]" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+        <Button Grid.Row="6" Name="btnCreateProfile" Click="btnCreateProfile_Click" IsEnabled="False">Update Profile</Button>
     </Grid>
+
 </UserControl>

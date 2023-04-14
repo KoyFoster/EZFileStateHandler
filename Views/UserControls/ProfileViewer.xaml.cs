@@ -28,24 +28,41 @@ namespace EZFileStateHandler.Views.UserControls
 
         public void Reload()
         {
-            try
-            {
-                // Initialise profile list
-                AppSettings appSettings = (AppSettings)Application.Current.Resources["AppSettings"];
-                var profiles = appSettings.Settings.Profiles;
-                ProfileList.Children.Clear();
-                foreach (var profile in profiles)
-                {
-                    var label = new Label();
-                    label.Content = profile.Name;
-                    ProfileList.Children.Add(label);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
 
+        private void tbSrc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void tbDest_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void tbProfileName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void btnSelDirSrc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSelFileSrc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSelDest_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnCreateProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
