@@ -8,6 +8,7 @@ namespace EZFileStateHandler.Views
         public MainWindow()
         {
             InitializeComponent();
+            MainTabs.SelectionChanged += TabControl_SelectionChanged;
         }
 
         private void StateHandlerMaker_Loaded(object sender, RoutedEventArgs e)
@@ -16,8 +17,10 @@ namespace EZFileStateHandler.Views
             ScreenHelper.PositionWindow(this, sender, e);
         }
 
-        private void TabControl_SelectionChanged(object sender, RoutedEventArgs e)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            e.Handled = true;
+
             // Get the selected tab
             var selectedTab = (TabItem)MainTabs.SelectedItem;
 
@@ -30,6 +33,11 @@ namespace EZFileStateHandler.Views
             {
                 // Reload the contents of the tab
                 Profiles.Reload();
+            }
+            else if (selectedTab == tabViewStates)
+            {
+                // Reload the contents of the tab
+                States.Load();
             }
         }
     }

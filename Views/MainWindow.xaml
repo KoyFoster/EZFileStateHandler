@@ -14,7 +14,7 @@
 
         <usercontrols:MenuBar Grid.Row="0" />
 
-        <TabControl Name="MainTabs" Grid.Row="1" SelectionChanged="TabControl_SelectionChanged" >
+        <TabControl Name="MainTabs" Grid.Row="1">
             <TabItem Name="tabCreateProfile" Header="Create Profile">
                 <usercontrols:StateHandlerMaker x:Name="StateMaker" Loaded="StateHandlerMaker_Loaded"  />
             </TabItem>

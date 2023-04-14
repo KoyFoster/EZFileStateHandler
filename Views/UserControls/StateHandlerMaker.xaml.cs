@@ -95,32 +95,6 @@ namespace EZFileStateHandler.Views.UserControls
             }
         }
 
-        public void CreateProfile(object sender, RoutedEventArgs e)
-        {
-            ProfileMaker.IsEnabled = false;
-            try
-            {
-                var profile = new Profile(tbProfileName.Text, tbSrc.Text, tbDest.Text);
-
-                AppSettings appSettings = (AppSettings)System.Windows.Application.Current.Resources["AppSettings"];
-                appSettings.Settings.Profiles.Add(profile);
-                appSettings.SaveSettings();
-                Status.Text = "Profile Successfully created";
-                // Clear Fields
-
-                ClearAllFields();
-            }
-            catch (Exception ex)
-            {
-                Status.Text = $"Error: {ex.Message}";
-                btnCreateProfile.IsEnabled = false;
-            }
-            finally
-            {
-                ProfileMaker.IsEnabled = true;
-            }
-        }
-
         private void tbSrc_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableCreateProfile();
@@ -149,6 +123,33 @@ namespace EZFileStateHandler.Views.UserControls
         private void tbProfileLocation_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableCreateProfile();
+        }
+
+        public void CreateProfile(object sender, RoutedEventArgs e)
+        {
+            ProfileMaker.IsEnabled = false;
+            try
+            {
+                var profile = new Profile(tbProfileName.Text, tbSrc.Text, tbDest.Text);
+
+                AppSettings appSettings = (AppSettings)System.Windows.Application.Current.Resources["AppSettings"];
+                appSettings.Settings.Profiles.Add(profile);
+                appSettings.SaveSettings();
+                Status.Text = "Profile Successfully created";
+                ClearAllFields();
+
+                // Update other tabs
+
+            }
+            catch (Exception ex)
+            {
+                Status.Text = $"Error: {ex.Message}";
+                btnCreateProfile.IsEnabled = false;
+            }
+            finally
+            {
+                ProfileMaker.IsEnabled = true;
+            }
         }
     }
 }

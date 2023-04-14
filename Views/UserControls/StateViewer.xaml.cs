@@ -1,6 +1,7 @@
 ﻿using EZFileStateHandler.Models;
 using EZFileStateHandler.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -15,10 +16,10 @@ namespace EZFileStateHandler.Views.UserControls
     {
         // Directories
         // Source
-        DirectoryTrackerViewModel dtvmSource { get; set; }
-        DirectoryTrackerViewModel dtvmPrevious { get; set; }
-        DirectoryTrackerViewModel dtvmBackups { get; set; }
-        DirectoryTrackerViewModel dtvmStates { get; set; }
+        DirectoryTrackerViewModel? DtvmSource { get; set; }
+        DirectoryTrackerViewModel? DtvmPrevious { get; set; }
+        DirectoryTrackerViewModel? DtvmBackups { get; set; }
+        DirectoryTrackerViewModel? DtvmStates { get; set; }
 
         private string stateDir = "";
         private string transferFileDir = "";
@@ -28,22 +29,25 @@ namespace EZFileStateHandler.Views.UserControls
         private string sourceDir = "";
         private string sourceFile = "";
 
-        private bool IsDir(string path) => (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
-
         private string GetPath(string dir, string file) => (file != "" ? $"{file}/{sourceFile}" : dir);
         private string GetSource() => GetPath(sourceDir, sourceFile);
         private string GetPrevious() => GetPath(statePreviousDir, sourceFile);
         private string GetSpace(string file = "") => GetPath(transferFileDir, file);
-        
-        private AppSettings AppSettings = (AppSettings)Application.Current.Resources["AppSettings"];
+
+        private List<Profile> GetProfiles() => ((AppSettings)Application.Current.Resources["AppSettings"]).Settings.Profiles;
 
         public StateViewer()
         {
             InitializeComponent();
+            this.Load();
+        }
+
+        public void Load()
+        {
             LoadProfileList();
 
             var selectedProfile = GetSelectedProfile();
-            if(selectedProfile==null) return;
+            if (selectedProfile == null) return;
             InitPaths(selectedProfile.Src, selectedProfile.Dst);
 
             InitializeFileStructure();
@@ -71,51 +75,49 @@ namespace EZFileStateHandler.Views.UserControls
             this.sourceDir = srcDir;
             this.sourceFile = srcFile;
 
-            // sourceDir = srcDir;//\Test Dir";
-            // stateDir = @"C:\Users\Koy (4-14-2019)\Downloads\ER States";
             transferFileDir = stateDir + @"\Space";
             statePreviousDir = stateDir + @"\Previous";
             stateBackupDir = stateDir + @"\Backups";
-            // sourceFile = "A.txt";
 
             // Init directories
-            dtvmSource = new DirectoryTrackerViewModel(srcDir, srcFile);
+            DtvmSource = new DirectoryTrackerViewModel(srcDir, srcFile);
 
-            dtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
-            QuickList.DataContext = dtvmStates;
-            QuickListEmpty.DataContext = dtvmBackups;
+            DtvmStates = new DirectoryTrackerViewModel($"{stateDir}\\Quick");
+            QuickList.DataContext = DtvmStates;
+            QuickListEmpty.DataContext = DtvmBackups;
 
-            dtvmBackups = new DirectoryTrackerViewModel($"{stateDir}\\Backups");
-            BackupList.DataContext = dtvmBackups;
-            BackupListEmpty.DataContext = dtvmBackups;
+            DtvmBackups = new DirectoryTrackerViewModel($"{stateDir}\\Backups");
+            BackupList.DataContext = DtvmBackups;
+            BackupListEmpty.DataContext = DtvmBackups;
 
-            dtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
-            btnRevertRestore.DataContext = dtvmPrevious;
+            DtvmPrevious = new DirectoryTrackerViewModel($"{stateDir}\\Previous");
+            btnRevertRestore.DataContext = DtvmPrevious;
         }
 
         public void LoadProfileList()
         {
-            if (AppSettings.Settings.Profiles.Count() > 0)
+            if (GetProfiles().Count > 0)
             {
+                if(ProfileList.ItemsSource == null)
                 ProfileList.Items.Clear();
-                ProfileList.ItemsSource = AppSettings.Settings.Profiles.Select(x => x.Name);
+                ProfileList.ItemsSource = GetProfiles().Select(x => x.Name);
                 ProfileList.SelectedIndex = 0;
             }
         }
 
         public Profile? GetSelectedProfile()
         {
-            if (AppSettings?.Settings?.Profiles == null || AppSettings.Settings.Profiles.Count() == 0) return null;
-            return AppSettings.Settings.Profiles.Where(x => x.Name == ProfileList.SelectedItem.ToString()).FirstOrDefault();
+            if (GetProfiles().Count == 0) return null;
+            return GetProfiles().Where(x => x.Name == ProfileList.SelectedItem.ToString()).FirstOrDefault();
         }
 
         public void Refresh()
         {
-            dtvmPrevious.Refresh();
+            DtvmPrevious?.Refresh();
             LoadQuickList();
-            dtvmStates.Refresh();
+            DtvmStates?.Refresh();
             LoadBackupList();
-            dtvmBackups.Refresh();
+            DtvmBackups?.Refresh();
         }
 
         private void InitializeFileStructure()
@@ -126,45 +128,47 @@ namespace EZFileStateHandler.Views.UserControls
             if (!Directory.Exists(transferFileDir))
                 Directory.CreateDirectory(transferFileDir);
 
-            //if (!Directory.Exists(stateQuickDir))
-            //    Directory.CreateDirectory(stateQuickDir);
-
             if (!Directory.Exists(statePreviousDir))
                 btnRevertRestore.IsEnabled = false;
 
             if (!Directory.Exists(stateBackupDir))
                 Directory.CreateDirectory(stateBackupDir);
-            // InitializeQuickState();
         }
 
         private string[] GetFilesDirectory(string dir)
         {
             string[] files = Directory.GetFiles(dir);
-
-            // Test moving to sub directory
-            // Directory.Move(directoryPath);
-
             return files.Select(file => Path.GetFileName(file)).ToArray();
         }
 
         private void LoadQuickList()
         {
-            QuickList.Children.Clear();
-            foreach (string file in dtvmStates.GetFiles())
+            if(DtvmStates != null)
             {
-                var label = new Label();
-                label.Content = file;
-                QuickList.Children.Add(label);
+                QuickList.Children.Clear();
+                foreach (string file in DtvmStates.GetFiles())
+                {
+                    var label = new Label
+                    {
+                        Content = file
+                    };
+                    QuickList.Children.Add(label);
+                }
             }
         }
         private void LoadBackupList()
         {
-            BackupList.Children.Clear();
-            foreach (string file in dtvmBackups.GetFiles())
+            if(DtvmBackups != null)
             {
-                var label = new Label();
-                label.Content = file;
-                BackupList.Children.Add(label);
+                BackupList.Children.Clear();
+                foreach (string file in DtvmBackups.GetFiles())
+                {
+                    var label = new Label
+                    {
+                        Content = file
+                    };
+                    BackupList.Children.Add(label);
+                }
             }
         }
 
@@ -294,32 +298,6 @@ namespace EZFileStateHandler.Views.UserControls
             }
         }
 
-        private void Move(string src, string dest)
-        {
-
-        }
-
-        private void Copy(string dir, string resultName = "")
-        {
-            string fullPath;
-            if (resultName == "")
-            {
-                string DateStamp = DateTime.Now.ToString("yyyy-MM-dd");
-                Directory.CreateDirectory($"{dir}/{DateStamp}/");
-                string TimeStamp = DateTime.Now.ToString("HH+mm+ss");
-                fullPath = $"{dir}/{DateStamp}/{TimeStamp}";
-            }
-            else
-            {
-                fullPath = $"{dir}/{resultName}";
-            }
-
-            if (sourceFile != "")
-                File.Copy($"{sourceDir}/{sourceFile}", fullPath, true);
-            else
-                CopyDirectory(sourceDir, fullPath);
-        }
-
         private void QuickState()
         {
             ActionStatus.Content = "Restoring...";
@@ -327,7 +305,8 @@ namespace EZFileStateHandler.Views.UserControls
             {
                 if (!SourceValidation()) return;
                 // this.Copy(stateQuickDir);
-                dtvmStates.Add(dtvmSource.GetPath(), true, true);
+                if(DtvmStates != null && DtvmSource != null)
+                DtvmStates.Add(DtvmSource.GetPath(), true, true);
             }
             catch (Exception ex)
             {
@@ -372,6 +351,8 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void ProfileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            e.Handled = true;
+
             if (ProfileList.SelectedIndex < 0) return;
             var selectedProfile = GetSelectedProfile();
             if (selectedProfile == null) return;
