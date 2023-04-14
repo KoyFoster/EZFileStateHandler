@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using Ookii.Dialogs.Wpf;
+using System.Linq;
 
 namespace EZFileStateHandler.Views.UserControls
 {
@@ -12,6 +13,7 @@ namespace EZFileStateHandler.Views.UserControls
     /// </summary>
     public partial class StateHandlerMaker : UserControl
     {
+        private AppSettings AppSettings = (AppSettings)Application.Current.Resources["AppSettings"];
 
         public StateHandlerMaker()
         {
@@ -85,7 +87,7 @@ namespace EZFileStateHandler.Views.UserControls
 
         private void btnDst_SelectFile(object sender, RoutedEventArgs e)
         {
-            var result = SelectFileOrDirectory();
+            var result = SelectFileOrDirectory(false);
             if (result != "")
             {
                 tbDest.Text = result;
@@ -129,9 +131,19 @@ namespace EZFileStateHandler.Views.UserControls
             EnableCreateProfile();
         }
 
-        private void tbProfileName_TextChanged(object sender, TextChangedEventArgs e)
+        private void ValidateProfileName(object sender, TextChangedEventArgs e)
         {
-            EnableCreateProfile();
+            if (AppSettings.Settings.Profiles.Where(x => x.Name == tbProfileName.Text).Any())
+            {
+                ProfileNameErrorMessage.Content = "This profile name is already used.";
+                btnCreateProfile.IsEnabled = false;
+            }
+            else
+            {
+                ProfileNameErrorMessage.Content = "";
+                EnableCreateProfile();
+            }
+
         }
 
         private void tbProfileLocation_TextChanged(object sender, TextChangedEventArgs e)

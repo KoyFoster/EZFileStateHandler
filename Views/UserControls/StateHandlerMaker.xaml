@@ -34,8 +34,9 @@
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label Width="80" HorizontalContentAlignment="Right">Profile Name:</Label>
-            <TextBox Name="tbProfileName" Width="150" Margin="4" TextChanged="tbProfileName_TextChanged" />
+            <TextBox Name="tbProfileName" Width="150" Margin="4" TextChanged="ValidateProfileName" />
         </StackPanel>
+        <Label Grid.Row="5" Name="ProfileNameErrorMessage" Content="[Error Message Here]" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
         <Button Grid.Row="6" Name="btnCreateProfile" Click="CreateProfile" IsEnabled="False">Create Profile</Button>
         
         <TextBlock  Grid.Row="7" Name="Status" Text="-" ></TextBlock>

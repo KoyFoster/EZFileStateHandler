@@ -34,8 +34,7 @@ namespace EZFileStateHandler.Views.UserControls
         private string GetSource() => GetPath(sourceDir, sourceFile);
         private string GetPrevious() => GetPath(statePreviousDir, sourceFile);
         private string GetSpace(string file = "") => GetPath(transferFileDir, file);
-
-        // Profiles
+        
         private AppSettings AppSettings = (AppSettings)Application.Current.Resources["AppSettings"];
 
         public StateViewer()
