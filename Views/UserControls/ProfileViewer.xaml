@@ -19,7 +19,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0">Profiles</Label>
-        <my:ProfileComboBox Grid.Row="1" x:Name="ProfileList" />
+        <my:ProfileComboBox Grid.Row="1" x:Name="ProfileList" SelectionChanged="ProfileList_SelectionChanged" />
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label Width="80" HorizontalContentAlignment="Right">Source:</Label>
             <TextBox IsReadOnly="True" Name="tbSrc" Width="150" Margin="4" TextChanged="tbSrc_TextChanged"  />
@@ -36,7 +36,10 @@
             <TextBox Name="tbProfileName" Width="150" Margin="4" TextChanged="tbProfileName_TextChanged" />
         </StackPanel>
         <Label Grid.Row="5" Name="ProfileNameErrorMessage" Content="[Error Message Here]" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
-        <Button Grid.Row="6" Name="btnCreateProfile" Click="btnCreateProfile_Click" IsEnabled="False">Update Profile</Button>
+        <StackPanel Grid.Row="6">
+            <Button  Name="btnCreateProfile" Click="btnCreateProfile_Click" IsEnabled="False">Update Profile</Button>
+            <Button  Name="btnUndo" Click="btnUndo_Click" IsEnabled="True">Undo</Button>
+        </StackPanel>
     </Grid>
 
 </UserControl>

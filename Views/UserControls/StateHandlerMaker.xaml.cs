@@ -117,7 +117,6 @@ namespace EZFileStateHandler.Views.UserControls
                 ProfileNameErrorMessage.Content = "";
                 EnableCreateProfile();
             }
-
         }
 
         private void tbProfileLocation_TextChanged(object sender, TextChangedEventArgs e)

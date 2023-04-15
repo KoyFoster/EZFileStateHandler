@@ -10,6 +10,7 @@ namespace EZFileStateHandler.Views.Controls
     public class ProfileComboBox : ComboBox
     {
         private List<Profile> GetProfiles() => ((AppSettings)Application.Current.Resources["AppSettings"]).Settings.Profiles;
+        public Profile GetProfile() => GetProfiles().FirstOrDefault(x => x.Name == this.SelectedItem.ToString());
 
         public ProfileComboBox()
         {
